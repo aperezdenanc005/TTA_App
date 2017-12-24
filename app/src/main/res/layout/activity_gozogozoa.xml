@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion.GozogozoaActivity">
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1">
+        <TableRow>
+            <Button
+                android:layout_height="wrap_content"
+                android:id="@+id/gozogozoa_aukera1"/>
+            <Button
+                android:layout_height="wrap_content"
+                android:id="@+id/gozogozoa_aukera2"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:layout_height="wrap_content"
+                android:id="@+id/gozogozoa_aukera3"/>
+            <Button
+                android:layout_height="wrap_content"
+                android:id="@+id/gozogozoa_aukera4"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

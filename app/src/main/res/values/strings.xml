@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">EgunerokoApp</string>
+
+    <string name="nombre_text">NOMBRE</string>
+    <string name="contrasena_text">CONTRASEÑA</string>
+    <string name="dni_text">DNI</string>
+
+    <string name="nombre_hint">Introduce nombre</string>
+    <string name="contrasena_hint">Introduce contraseña</string>
+    <string name="dni_hint">Introduce DNI</string>
+
+    <string name="registarse">REGISTARSE</string>
+    <string name="iniciar_sesion">INICIAR SESIÓN</string>
+    <string name="sacar_foto">SACAR FOTO</string>
+
+    <string name="login_text">LOGIN</string>
+    <string name="login_contrasena_text">CONTRASEÑA</string>
+
+    <string name="login_hint">Introduce login</string>
+
+    <string name="goizean">GOIZEAN</string>
+    <string name="klasean">KLASEAN</string>
+    <string name="arratsaldean">ARRATSALDEAN</string>
+    <string name="puntuazioa">PUNTUAZIOA</string>
+
+    <string name="gozoGozoa">GOZO GOZOA</string>
+    <string name="bagoaz">BAGOAZ</string>
+
+    <string name="zer_diozu">ZER DIOZU?</string>
+    <string name="button_konprobatu">KONPROBATU</string>
+</resources>
