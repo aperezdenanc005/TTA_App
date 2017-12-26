@@ -27,5 +27,8 @@
     <string name="bagoaz">BAGOAZ</string>
 
     <string name="zer_diozu">ZER DIOZU?</string>
+    <string name="gozo_gozoa">GOZO GOZOA</string>
     <string name="button_konprobatu">KONPROBATU</string>
+    <string name="test_opcion_correcta">ONDO</string>
+    <string name="test_opcion_incorrecta">TXARTO</string>
 </resources>
