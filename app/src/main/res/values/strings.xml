@@ -29,6 +29,16 @@
     <string name="zer_diozu">ZER DIOZU?</string>
     <string name="gozo_gozoa">GOZO GOZOA</string>
     <string name="button_konprobatu">KONPROBATU</string>
+    <string name="button_gorde">GORDE</string>
     <string name="test_opcion_correcta">ONDO</string>
     <string name="test_opcion_incorrecta">TXARTO</string>
+
+    <string name="zerDiozu1">1. ESKERRIK ASKO</string>
+    <string name="zerDiozu2">2. KAIXO</string>
+    <string name="zerDiozu3">3. AGUR</string>
+    <string name="zerDiozu4">4. BARKATU</string>
+    <string name="zerDiozu5">5. EGUN ON</string>
+    <string name="zerDiozu6">6. EMANGO ZENIDAKE...</string>
+    <string name="zerDiozu7">7. ZER ORDU DA?</string>
+    <string name="eremuak_beteta">Eremu guztiak bete behar dituzu!!!</string>
 </resources>

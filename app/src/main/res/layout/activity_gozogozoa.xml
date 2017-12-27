@@ -54,6 +54,14 @@
             android:visibility="invisible"
             android:id="@+id/button_konprobatu_GozoGozoa"
             android:onClick="konprobatuGozoGozoa"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/button_gorde"
+            android:visibility="invisible"
+            android:id="@+id/button_gorde_GozoGozoa" />
     </LinearLayout>
 
 
