@@ -1,31 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion.EkintzakActivity">
 
-    <TableLayout
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ekintzak"
+            android:textSize="20dp"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:id="@+id/image_ekintzak"
+            android:layout_gravity="center"/>
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,1">
+            <TableRow>
+                <Button
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ekintzak_aukera1"/>
+                <Button
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ekintzak_aukera2"/>
+            </TableRow>
+            <TableRow>
+                <Button
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ekintzak_aukera3"/>
+                <Button
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ekintzak_aukera4"/>
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/button_konprobatu"
+            android:visibility="invisible"
+            android:id="@+id/button_konprobatu_ekintzak"
+            android:onClick="konprobatuEkintzak"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/button_gorde"
+            android:visibility="invisible"
+            android:id="@+id/button_gorde_ekintzak" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="0,1">
-        <TableRow>
-            <Button
-                android:layout_height="wrap_content"
-                android:id="@+id/ekintzak_aukera1"/>
-            <Button
-                android:layout_height="wrap_content"
-                android:id="@+id/ekintzak_aukera2"/>
-        </TableRow>
-        <TableRow>
-            <Button
-                android:layout_height="wrap_content"
-                android:id="@+id/ekintzak_aukera3"/>
-            <Button
-                android:layout_height="wrap_content"
-                android:id="@+id/ekintzak_aukera4"/>
-        </TableRow>
-    </TableLayout>
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:id="@+id/footer_ekintzak"
+        android:background="#DCDCDC">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/emaitzak_ekintzak"
+            android:layout_margin="15dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

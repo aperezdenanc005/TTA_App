@@ -21,7 +21,7 @@ public class GoizeanActivity extends AppCompatActivity {
     }
     public void lanzarBagoaz(View view)
     {
-        Intent intent=new Intent(this,PuntuazioaActivity.class);
+        Intent intent=new Intent(this,BagoazActivity.class);
         startActivity(intent);
     }
 }

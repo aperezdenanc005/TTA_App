@@ -253,7 +253,7 @@ public class GozogozoaActivity extends AppCompatActivity {
     public void konprobatuGozoGozoa(View view)
     {
         final String[] correct={"SAGARRA","OGIA","ESNEA","AZUKREA","ARROZA","GATZA","HARAGIA","ARRAINA","GAZTA","TXOKOLATEA","GOZOKIAK","AZENARIOA"};
-        Toast toast =Toast.makeText(this,R.string.test_opcion_correcta,Toast.LENGTH_LONG);
+        Toast toast =Toast.makeText(this,R.string.test_opcion_correcta,Toast.LENGTH_SHORT);
         //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         Button res1=(Button)findViewById(R.id.gozogozoa_aukera1);
         Button res2=(Button)findViewById(R.id.gozogozoa_aukera2);
@@ -286,7 +286,7 @@ public class GozogozoaActivity extends AppCompatActivity {
         }
         else
         {
-            Toast toastIncorrecto=Toast.makeText(this,R.string.test_opcion_incorrecta,Toast.LENGTH_LONG);
+            Toast toastIncorrecto=Toast.makeText(this,R.string.test_opcion_incorrecta,Toast.LENGTH_SHORT);
             toastIncorrecto.show();
             //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             //toast.getView().setBackgroundColor(Color.DKGRAY);
