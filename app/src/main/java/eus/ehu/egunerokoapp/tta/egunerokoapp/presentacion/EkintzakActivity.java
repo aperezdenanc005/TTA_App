@@ -1,22 +1,24 @@
 package eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion;
 
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
 
 import eus.ehu.egunerokoapp.tta.egunerokoapp.R;
-import java.net.URL;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
+import android.widget.VideoView;
+
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 
 public class EkintzakActivity extends AppCompatActivity {
 
@@ -33,8 +35,16 @@ public class EkintzakActivity extends AppCompatActivity {
     int numeroTestActual=0;
     int puntuazioaEkintzak=0;
     int[] testsAleatorios=RandomizeIntArray(numeroTest);
-    private String imageHttpAddress = "https://dl.dropboxusercontent.com/s/ijy6alscyvg996u/Borrokatu.gif";
+    String videoURLBorrokatu = "https://dl.dropboxusercontent.com/s/5hshb7mrhma7y1p/Borrokatu.mp4";
+    String videoURLDantzatu="https://dl.dropboxusercontent.com/s/fxclivmy3t1zans/Dantzatu.mp4";
+    String videoURLHitzEgin="https://dl.dropboxusercontent.com/s/3n41mk7d91tfijo/HitzEgin.mp4";
+    String videoURLJolastu="https://dl.dropboxusercontent.com/s/kh2u6j6fml4c93w/Jolastu.mp4";
+    String videoURLKorrika="https://dl.dropboxusercontent.com/s/7v4hrgdg5jgj2q0/Korrika.mp4";
+    String videoURLkulunkatu="https://dl.dropboxusercontent.com/s/xq5f763umqay407/Kulunkatu.mp4";
+    String videoURLOihukatu="https://dl.dropboxusercontent.com/s/rihw0mjbetttcqa/Oihukatu.mp4";
+    String videoURLSaltoka="https://dl.dropboxusercontent.com/s/ndpwurr7js6ador/Saltoka.mp4";
 
+    private int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +83,6 @@ public class EkintzakActivity extends AppCompatActivity {
     }
     public void cargarTest(int[] testsAleatorios)
     {
-        ImageView idImagenEkintzak=(ImageView)findViewById(R.id.image_ekintzak);
         String[] respuestasTest1menzcladas=Randomize(respuestasTest1);
         String[] respuestasTest2menzcladas=Randomize(respuestasTest2);
         String[] respuestasTest3menzcladas=Randomize(respuestasTest3);
@@ -87,30 +96,10 @@ public class EkintzakActivity extends AppCompatActivity {
         final Button respuesta3=findViewById(R.id.ekintzak_aukera3);
         final Button respuesta4=findViewById(R.id.ekintzak_aukera4);
 
-        /*URL imageUrl = null;
-        HttpURLConnection conn = null;
-
-        try {
-
-            imageUrl = new URL(imageHttpAddress);
-            conn = (HttpURLConnection) imageUrl.openConnection();
-            conn.connect();
-
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2; // el factor de escala a minimizar la imagen, siempre es potencia de 2
-
-            Bitmap imagen = BitmapFactory.decodeStream(conn.getInputStream(), new Rect(0, 0, 0, 0), options);
-            idImagenEkintzak.setImageBitmap(imagen);
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }*/
-
         switch(testsAleatorios[numeroTestActual])
         {
             case 1:
+                showVideo(videoURLBorrokatu);
                 respuesta1.setText(respuestasTest1menzcladas[0]);
                 respuesta2.setText(respuestasTest1menzcladas[1]);
                 respuesta3.setText(respuestasTest1menzcladas[2]);
@@ -118,7 +107,7 @@ public class EkintzakActivity extends AppCompatActivity {
                 inhabilitarBotonestest(respuesta1,respuesta2,respuesta3,respuesta4);
                 break;
             case 2:
-                //idImagenEkintzak.setImageResource(R.drawable.ogia);
+                showVideo(videoURLSaltoka);
                 respuesta1.setText(respuestasTest2menzcladas[0]);
                 respuesta2.setText(respuestasTest2menzcladas[1]);
                 respuesta3.setText(respuestasTest2menzcladas[2]);
@@ -126,7 +115,7 @@ public class EkintzakActivity extends AppCompatActivity {
                 inhabilitarBotonestest(respuesta1,respuesta2,respuesta3,respuesta4);
                 break;
             case 3:
-                //idImagenEkintzak.setImageResource(R.drawable.esnea);
+                showVideo(videoURLKorrika);
                 respuesta1.setText(respuestasTest3menzcladas[0]);
                 respuesta2.setText(respuestasTest3menzcladas[1]);
                 respuesta3.setText(respuestasTest3menzcladas[2]);
@@ -134,7 +123,7 @@ public class EkintzakActivity extends AppCompatActivity {
                 inhabilitarBotonestest(respuesta1,respuesta2,respuesta3,respuesta4);
                 break;
             case 4:
-                //idImagenEkintzak.setImageResource(R.drawable.azukrea);
+                showVideo(videoURLJolastu);
                 respuesta1.setText(respuestasTest4menzcladas[0]);
                 respuesta2.setText(respuestasTest4menzcladas[1]);
                 respuesta3.setText(respuestasTest4menzcladas[2]);
@@ -142,7 +131,7 @@ public class EkintzakActivity extends AppCompatActivity {
                 inhabilitarBotonestest(respuesta1,respuesta2,respuesta3,respuesta4);
                 break;
             case 5:
-                //idImagenEkintzak.setImageResource(R.drawable.arroza);
+                showVideo(videoURLDantzatu);
                 respuesta1.setText(respuestasTest5menzcladas[0]);
                 respuesta2.setText(respuestasTest5menzcladas[1]);
                 respuesta3.setText(respuestasTest5menzcladas[2]);
@@ -150,7 +139,7 @@ public class EkintzakActivity extends AppCompatActivity {
                 inhabilitarBotonestest(respuesta1,respuesta2,respuesta3,respuesta4);
                 break;
             case 6:
-                //idImagenEkintzak.setImageResource(R.drawable.gatza);
+                showVideo(videoURLkulunkatu);
                 respuesta1.setText(respuestasTest6menzcladas[0]);
                 respuesta2.setText(respuestasTest6menzcladas[1]);
                 respuesta3.setText(respuestasTest6menzcladas[2]);
@@ -158,7 +147,7 @@ public class EkintzakActivity extends AppCompatActivity {
                 inhabilitarBotonestest(respuesta1,respuesta2,respuesta3,respuesta4);
                 break;
             case 7:
-                //idImagenEkintzak.setImageResource(R.drawable.haragia);
+                showVideo(videoURLHitzEgin);
                 respuesta1.setText(respuestasTest7menzcladas[0]);
                 respuesta2.setText(respuestasTest7menzcladas[1]);
                 respuesta3.setText(respuestasTest7menzcladas[2]);
@@ -166,7 +155,7 @@ public class EkintzakActivity extends AppCompatActivity {
                 inhabilitarBotonestest(respuesta1,respuesta2,respuesta3,respuesta4);
                 break;
             case 8:
-                //idImagenEkintzak.setImageResource(R.drawable.arraina);
+                showVideo(videoURLOihukatu);
                 respuesta1.setText(respuestasTest8menzcladas[0]);
                 respuesta2.setText(respuestasTest8menzcladas[1]);
                 respuesta3.setText(respuestasTest8menzcladas[2]);
@@ -290,5 +279,55 @@ public class EkintzakActivity extends AppCompatActivity {
             res4.setEnabled(true);
             cargarTest(testsAleatorios);
         }
+    }
+    private void showVideo(String advise)
+    {
+        final VideoView video=(VideoView)findViewById(R.id.video_ekintzak);
+        video.setVideoURI(Uri.parse(advise));
+
+        final MediaController controller=new MediaController(this)
+        {
+            /*@Override
+            public void hide()
+            {
+
+            }*/
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent event)
+            {
+                if(event.getKeyCode()==KeyEvent.KEYCODE_BACK)
+                {
+                    finish();
+
+                }
+                return super.dispatchKeyEvent(event);
+            }
+        };
+        controller.setAnchorView(video);
+        video.setMediaController(controller);
+
+        video.setOnPreparedListener(new OnPreparedListener()
+        {
+
+            public void onPrepared(MediaPlayer mediaPlayer)
+            {
+                video.seekTo(position);
+                if (position == 0) {
+                    video.start();
+                }
+
+                // When video Screen change size.
+                mediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+                    @Override
+                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+
+                        // Re-Set the videoView that acts as the anchor for the MediaController
+                        controller.setAnchorView(video);
+                    }
+                });
+            }
+        });
+        //video.start();
     }
 }

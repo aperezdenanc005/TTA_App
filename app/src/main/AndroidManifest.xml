@@ -16,14 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentacion.LoginActivity" />
-        <activity android:name=".presentacion.MenuActivity" />
-        <activity android:name=".presentacion.GoizeanActivity" />
-        <activity android:name=".presentacion.GozogozoaActivity" />
-        <activity android:name=".presentacion.ZerdiozuActivity" />
-        <activity android:name=".presentacion.EkintzakActivity" />
-        <activity android:name=".presentacion.PuntuazioaActivity" />
-        <activity android:name=".presentacion.BagoazActivity"></activity>
+        <activity android:name=".presentacion.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".presentacion.MenuActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".presentacion.GoizeanActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".presentacion.GozogozoaActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".presentacion.ZerdiozuActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".presentacion.EkintzakActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".presentacion.PuntuazioaActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".presentacion.BagoazActivity" android:screenOrientation="portrait"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>
