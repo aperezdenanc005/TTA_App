@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@string/gozo_gozoa"
             android:textSize="20dp"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <ImageView
             android:layout_width="200dp"
@@ -61,7 +61,8 @@
             android:layout_gravity="center"
             android:text="@string/button_gorde"
             android:visibility="invisible"
-            android:id="@+id/button_gorde_GozoGozoa" />
+            android:id="@+id/button_gorde_GozoGozoa"
+            android:onClick="gorde"/>
     </LinearLayout>
 
 

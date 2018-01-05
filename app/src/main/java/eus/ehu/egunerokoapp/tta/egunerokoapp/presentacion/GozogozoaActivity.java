@@ -1,5 +1,6 @@
 package eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -299,8 +303,8 @@ public class GozogozoaActivity extends AppCompatActivity {
         {
             findViewById(R.id.button_konprobatu_GozoGozoa).setVisibility(View.GONE);
             findViewById(R.id.button_gorde_GozoGozoa).setVisibility(View.VISIBLE);
-        }else
-        {
+        }
+        else{
             findViewById(R.id.button_konprobatu_GozoGozoa).setVisibility(View.INVISIBLE);
             numeroTestActual++;
             res1.setEnabled(true);
@@ -309,5 +313,53 @@ public class GozogozoaActivity extends AppCompatActivity {
             res4.setEnabled(true);
             cargarTest(testsAleatorios);
         }
+    }
+
+    public void gorde(View view)
+    {
+        SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
+        int size = prefs.getInt("arrayGozoGozoaPuntuazioa" + "_size", 0);
+        size++;
+        SharedPreferences.Editor editor=prefs.edit();
+
+        String correctasGozoGozoaString=Integer.toString(puntuazioaGozoGoza);
+
+        String[] puntuazioaGozoGozoaArray=new String[size];
+        String[] orduaGozoGozoaArray=new String[size];
+        String[] dataGozoGozoaArray=new String[size];
+
+        Date date = new Date();
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        String ordua=hourFormat.format(date);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String data=dateFormat.format(date);
+
+        for(int i=0;i<size;i++)
+        {
+            puntuazioaGozoGozoaArray[i] = prefs.getString("arrayGozoGozoaPuntuazioa" + "_" + i, "");
+            orduaGozoGozoaArray[i] = prefs.getString("arrayGozoGozoaOrdua" + "_" + i, "");
+            dataGozoGozoaArray[i] = prefs.getString("arrayGozoGozoaData" + "_" + i, "");
+            if(puntuazioaGozoGozoaArray[0]=="")
+            {
+                puntuazioaGozoGozoaArray[0]=correctasGozoGozoaString;
+                orduaGozoGozoaArray[0]=ordua;
+                dataGozoGozoaArray[0]=data;
+            }else
+            {
+                //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
+                puntuazioaGozoGozoaArray[size-1]=correctasGozoGozoaString;
+                orduaGozoGozoaArray[size-1]=ordua;
+                dataGozoGozoaArray[size-1]=data;
+            }
+        }
+
+        editor.putInt("arrayGozoGozoaPuntuazioa" +"_size", puntuazioaGozoGozoaArray.length);
+        for(int i=0;i<puntuazioaGozoGozoaArray.length;i++)
+        {
+            editor.putString("arrayGozoGozoaPuntuazioa" + "_" + i, puntuazioaGozoGozoaArray[i]);
+            editor.putString("arrayGozoGozoaOrdua" + "_" + i, orduaGozoGozoaArray[i]);
+            editor.putString("arrayGozoGozoaData" + "_" + i, dataGozoGozoaArray[i]);
+        }
+        editor.commit();
     }
 }

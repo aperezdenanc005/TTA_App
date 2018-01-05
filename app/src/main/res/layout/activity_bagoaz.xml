@@ -90,7 +90,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="invisible"
-            android:text="@string/button_gorde" />
+            android:text="@string/button_gorde"
+            android:onClick="gorde"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

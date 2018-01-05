@@ -1,5 +1,6 @@
 package eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,9 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import eus.ehu.egunerokoapp.tta.egunerokoapp.R;
@@ -329,5 +333,53 @@ public class EkintzakActivity extends AppCompatActivity {
             }
         });
         //video.start();
+    }
+    public void gorde(View view)
+    {
+        SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
+        int size = prefs.getInt("arrayEkintzakPuntuazioa" + "_size", 0);
+        size++;
+        SharedPreferences.Editor editor=prefs.edit();
+
+        String correctasEkintzakString=Integer.toString(puntuazioaEkintzak);
+
+        String[] puntuazioaEkintzakArray=new String[size];
+        String[] orduaEkintzakArray=new String[size];
+        String[] dataEkintzakArray=new String[size];
+
+        Date date = new Date();
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        String ordua=hourFormat.format(date);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String data=dateFormat.format(date);
+
+        for(int i=0;i<size;i++)
+        {
+            puntuazioaEkintzakArray[i] = prefs.getString("arrayEkintzakPuntuazioa" + "_" + i, "");
+            orduaEkintzakArray[i] = prefs.getString("arrayEkintzakOrdua" + "_" + i, "");
+            dataEkintzakArray[i] = prefs.getString("arrayEkintzakData" + "_" + i, "");
+            if(puntuazioaEkintzakArray[0]=="")
+            {
+                puntuazioaEkintzakArray[0]=correctasEkintzakString;
+                orduaEkintzakArray[0]=ordua;
+                dataEkintzakArray[0]=data;
+            }else
+            {
+                //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
+                puntuazioaEkintzakArray[size-1]=correctasEkintzakString;
+                orduaEkintzakArray[size-1]=ordua;
+                dataEkintzakArray[size-1]=data;
+            }
+        }
+
+        editor.putInt("arrayEkintzakPuntuazioa" +"_size", puntuazioaEkintzakArray.length);
+        for(int i=0;i<puntuazioaEkintzakArray.length;i++)
+        {
+            editor.putString("arrayEkintzakPuntuazioa" + "_" + i, puntuazioaEkintzakArray[i]);
+            editor.putString("arrayEkintzakOrdua" + "_" + i, orduaEkintzakArray[i]);
+            editor.putString("arrayEkintzakData" + "_" + i, dataEkintzakArray[i]);
+        }
+
+        editor.commit();
     }
 }

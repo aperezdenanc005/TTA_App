@@ -7,14 +7,26 @@
     android:orientation="vertical"
     tools:context="eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion.GoizeanActivity">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/gozogozoa"
+        android:layout_gravity="center"/>
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/gozoGozoa"
-        android:onClick="lanzarGozoGozoa"/>
+        android:onClick="lanzarGozoGozoa"
+        android:layout_gravity="center"/>
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/bagoaz"
+        android:layout_gravity="center"/>
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/bagoaz"
-        android:onClick="lanzarBagoaz"/>
+        android:onClick="lanzarBagoaz"
+        android:layout_gravity="center"/>
 </LinearLayout>

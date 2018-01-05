@@ -7,4 +7,58 @@
     android:orientation="vertical"
     tools:context="eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion.PuntuazioaActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/puntuazioa"
+                android:textSize="20dp"
+                android:layout_margin="10dp"
+                android:gravity="center"/>
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tablePuntuazioa"
+                android:stretchColumns="0,3"
+                android:gravity="center">
+                <TableRow>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:text="@string/eguna"
+                        android:textSize="10dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:text="@string/ordua"
+                        android:textSize="10dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:text="@string/erabiltzailea"
+                        android:textSize="10dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:text="@string/jokua"
+                        android:textSize="10dp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:text="@string/puntuazioa"
+                        android:textSize="10dp"
+                        android:gravity="center"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

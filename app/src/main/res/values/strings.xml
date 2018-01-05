@@ -42,4 +42,13 @@
     <string name="zerDiozu7">7. ZER ORDU DA?</string>
     <string name="eremuak_beteta">Eremu guztiak bete behar dituzu!!!</string>
     <string name="ekintzak">JOLASTEKO EKINTZAK</string>
+
+    <string name="eguna">EGUNA</string>
+    <string name="ordua">ORDUA</string>
+    <string name="erabiltzailea">ERABILTZAILEA</string>
+    <string name="jokua">JOKUA</string>
+    <string name="puntuak">PUNTUAK</string>
+
+    <string name="no_camera">No dispones de camara en el dispositivo</string>
+    <string name="no_app">No dispones de la aplicación necesaria</string>
 </resources>

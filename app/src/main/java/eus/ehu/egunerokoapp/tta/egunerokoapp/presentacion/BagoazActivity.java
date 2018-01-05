@@ -1,5 +1,6 @@
 package eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion;
 
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import eus.ehu.egunerokoapp.tta.egunerokoapp.R;
@@ -437,5 +441,52 @@ public class BagoazActivity extends AppCompatActivity {
             botoia3.setTextColor(Color.BLACK);
             cargarTestBagoaz(testsAleatorios);
         }
+    }
+    public void gorde(View view)
+    {
+        SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
+        int size = prefs.getInt("arrayBagoazPuntuazioa" + "_size", 0);
+        size++;
+        SharedPreferences.Editor editor=prefs.edit();
+
+        String correctasBagoazString=Integer.toString(puntuazioaBagoaz);
+
+        String[] puntuazioaBagoazArray=new String[size];
+        String[] orduaBagoazArray=new String[size];
+        String[] dataBagoazArray=new String[size];
+
+        Date date = new Date();
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        String ordua=hourFormat.format(date);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String data=dateFormat.format(date);
+
+        for(int i=0;i<size;i++)
+        {
+            puntuazioaBagoazArray[i] = prefs.getString("arrayBagoazPuntuazioa" + "_" + i, "");
+            orduaBagoazArray[i] = prefs.getString("arrayBagoazOrdua" + "_" + i, "");
+            dataBagoazArray[i] = prefs.getString("arrayBagoazData" + "_" + i, "");
+            if(puntuazioaBagoazArray[0]=="")
+            {
+                puntuazioaBagoazArray[0]=correctasBagoazString;
+                orduaBagoazArray[0]=ordua;
+                dataBagoazArray[0]=data;
+            }else
+            {
+                //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
+                puntuazioaBagoazArray[size-1]=correctasBagoazString;
+                orduaBagoazArray[size-1]=ordua;
+                dataBagoazArray[size-1]=data;
+            }
+        }
+
+        editor.putInt("arrayBagoazPuntuazioa" +"_size", puntuazioaBagoazArray.length);
+        for(int i=0;i<puntuazioaBagoazArray.length;i++)
+        {
+            editor.putString("arrayBagoazPuntuazioa" + "_" + i, puntuazioaBagoazArray[i]);
+            editor.putString("arrayBagoazOrdua" + "_" + i, orduaBagoazArray[i]);
+            editor.putString("arrayBagoazData" + "_" + i, dataBagoazArray[i]);
+        }
+        editor.commit();
     }
 }
