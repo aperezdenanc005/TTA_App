@@ -4,23 +4,30 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
 import eus.ehu.egunerokoapp.tta.egunerokoapp.R;
+import eus.ehu.egunerokoapp.tta.egunerokoapp.modelo.RestClient;
+
 import android.graphics.PorterDuff;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class BagoazActivity extends AppCompatActivity {
+
+    RestClient restClient=new RestClient("http://u017633.ehu.eus:28080/EgunerokoApp/rest/App");
+    String resultadoGETGorde;
 
     String[] bagoazBotonesTest1={"AUTOBUSA","TRENA","MOTORRA"};
     String[] bagoazBotonesTest2={"HEGAZKINA","ITSASONTZIA","BIZIKLETA"};
@@ -444,49 +451,82 @@ public class BagoazActivity extends AppCompatActivity {
     }
     public void gorde(View view)
     {
-        SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
-        int size = prefs.getInt("arrayBagoazPuntuazioa" + "_size", 0);
-        size++;
-        SharedPreferences.Editor editor=prefs.edit();
+        final SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
+        final String login=prefs.getString("login","");
 
-        String correctasBagoazString=Integer.toString(puntuazioaBagoaz);
-
-        String[] puntuazioaBagoazArray=new String[size];
-        String[] orduaBagoazArray=new String[size];
-        String[] dataBagoazArray=new String[size];
-
-        Date date = new Date();
-        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-        String ordua=hourFormat.format(date);
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String data=dateFormat.format(date);
-
-        for(int i=0;i<size;i++)
+        new AsyncTask<Void,Void,Void>()
         {
-            puntuazioaBagoazArray[i] = prefs.getString("arrayBagoazPuntuazioa" + "_" + i, "");
-            orduaBagoazArray[i] = prefs.getString("arrayBagoazOrdua" + "_" + i, "");
-            dataBagoazArray[i] = prefs.getString("arrayBagoazData" + "_" + i, "");
-            if(puntuazioaBagoazArray[0]=="")
+            @Override
+            protected Void doInBackground(Void... voids)
             {
-                puntuazioaBagoazArray[0]=correctasBagoazString;
-                orduaBagoazArray[0]=ordua;
-                dataBagoazArray[0]=data;
-            }else
-            {
-                //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
-                puntuazioaBagoazArray[size-1]=correctasBagoazString;
-                orduaBagoazArray[size-1]=ordua;
-                dataBagoazArray[size-1]=data;
+                try{
+                    //restClient.setHttpBasicAuth(dni,passwd);
+                    resultadoGETGorde=restClient.getString(String.format("gorde?login=%s",login+"&puntos="+puntuazioaBagoaz+"&nombre=bagoaz"));
+                    //} catch (JSONException e) {
+                    //e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String ok=resultadoGETGorde;
+
+                return null;
             }
-        }
 
-        editor.putInt("arrayBagoazPuntuazioa" +"_size", puntuazioaBagoazArray.length);
-        for(int i=0;i<puntuazioaBagoazArray.length;i++)
-        {
-            editor.putString("arrayBagoazPuntuazioa" + "_" + i, puntuazioaBagoazArray[i]);
-            editor.putString("arrayBagoazOrdua" + "_" + i, orduaBagoazArray[i]);
-            editor.putString("arrayBagoazData" + "_" + i, dataBagoazArray[i]);
-        }
-        editor.commit();
+            @Override
+            protected void onPostExecute(Void aVoid)
+            {
+                if(resultadoGETGorde.matches("GORDETA"))
+                {
+                    Toast.makeText(getApplicationContext(),R.string.gordeta,Toast.LENGTH_LONG).show();
+                    int size = prefs.getInt("arrayBagoazPuntuazioa" + "_size", 0);
+                    size++;
+                    SharedPreferences.Editor editor=prefs.edit();
+
+                    String correctasBagoazString=Integer.toString(puntuazioaBagoaz);
+
+                    String[] puntuazioaBagoazArray=new String[size];
+                    String[] orduaBagoazArray=new String[size];
+                    String[] dataBagoazArray=new String[size];
+
+                    Date date = new Date();
+                    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+                    String ordua=hourFormat.format(date);
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String data=dateFormat.format(date);
+
+                    for(int i=0;i<size;i++)
+                    {
+                        puntuazioaBagoazArray[i] = prefs.getString("arrayBagoazPuntuazioa" + "_" + i, "");
+                        orduaBagoazArray[i] = prefs.getString("arrayBagoazOrdua" + "_" + i, "");
+                        dataBagoazArray[i] = prefs.getString("arrayBagoazData" + "_" + i, "");
+                        if(puntuazioaBagoazArray[0]=="")
+                        {
+                            puntuazioaBagoazArray[0]=correctasBagoazString;
+                            orduaBagoazArray[0]=ordua;
+                            dataBagoazArray[0]=data;
+                        }else
+                        {
+                            //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
+                            puntuazioaBagoazArray[size-1]=correctasBagoazString;
+                            orduaBagoazArray[size-1]=ordua;
+                            dataBagoazArray[size-1]=data;
+                        }
+                    }
+
+                    editor.putInt("arrayBagoazPuntuazioa" +"_size", puntuazioaBagoazArray.length);
+                    for(int i=0;i<puntuazioaBagoazArray.length;i++)
+                    {
+                        editor.putString("arrayBagoazPuntuazioa" + "_" + i, puntuazioaBagoazArray[i]);
+                        editor.putString("arrayBagoazOrdua" + "_" + i, orduaBagoazArray[i]);
+                        editor.putString("arrayBagoazData" + "_" + i, dataBagoazArray[i]);
+                    }
+                    editor.commit();
+
+                }else
+                {
+                    Toast.makeText(getApplicationContext(),R.string.gordeEz,Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 }

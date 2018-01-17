@@ -1,7 +1,9 @@
 package eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,16 +11,20 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
 import eus.ehu.egunerokoapp.tta.egunerokoapp.R;
+import eus.ehu.egunerokoapp.tta.egunerokoapp.modelo.RestClient;
+
 import android.widget.VideoView;
 
 import android.media.MediaPlayer;
@@ -26,6 +32,8 @@ import android.media.MediaPlayer.OnPreparedListener;
 
 public class EkintzakActivity extends AppCompatActivity {
 
+    RestClient restClient=new RestClient("http://u017633.ehu.eus:28080/EgunerokoApp/rest/App");
+    String resultadoGETGorde;
     String[] respuestasTest1={"KORRIKA EGIN","BORROKATU","SALTO EGIN","DANTZATU"};//BORROKATU
     String[] respuestasTest2={"BORROKATU","JOLASTU","SALTO EGIN","OIHUKATU"};//SALTOKA
     String[] respuestasTest3={"KORRIKA EGIN","HITZ EGIN","SALTO EGIN","OIHUKATU"};//KORRIKA
@@ -336,50 +344,83 @@ public class EkintzakActivity extends AppCompatActivity {
     }
     public void gorde(View view)
     {
-        SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
-        int size = prefs.getInt("arrayEkintzakPuntuazioa" + "_size", 0);
-        size++;
-        SharedPreferences.Editor editor=prefs.edit();
+        final SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
+        final String login=prefs.getString("login","");
 
-        String correctasEkintzakString=Integer.toString(puntuazioaEkintzak);
-
-        String[] puntuazioaEkintzakArray=new String[size];
-        String[] orduaEkintzakArray=new String[size];
-        String[] dataEkintzakArray=new String[size];
-
-        Date date = new Date();
-        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-        String ordua=hourFormat.format(date);
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String data=dateFormat.format(date);
-
-        for(int i=0;i<size;i++)
+        new AsyncTask<Void,Void,Void>()
         {
-            puntuazioaEkintzakArray[i] = prefs.getString("arrayEkintzakPuntuazioa" + "_" + i, "");
-            orduaEkintzakArray[i] = prefs.getString("arrayEkintzakOrdua" + "_" + i, "");
-            dataEkintzakArray[i] = prefs.getString("arrayEkintzakData" + "_" + i, "");
-            if(puntuazioaEkintzakArray[0]=="")
+            @Override
+            protected Void doInBackground(Void... voids)
             {
-                puntuazioaEkintzakArray[0]=correctasEkintzakString;
-                orduaEkintzakArray[0]=ordua;
-                dataEkintzakArray[0]=data;
-            }else
-            {
-                //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
-                puntuazioaEkintzakArray[size-1]=correctasEkintzakString;
-                orduaEkintzakArray[size-1]=ordua;
-                dataEkintzakArray[size-1]=data;
+                try{
+                    //restClient.setHttpBasicAuth(dni,passwd);
+                    resultadoGETGorde=restClient.getString(String.format("gorde?login=%s",login+"&puntos="+puntuazioaEkintzak+"&nombre=ekintzak"));
+                    //} catch (JSONException e) {
+                    //e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String ok=resultadoGETGorde;
+
+                return null;
             }
-        }
 
-        editor.putInt("arrayEkintzakPuntuazioa" +"_size", puntuazioaEkintzakArray.length);
-        for(int i=0;i<puntuazioaEkintzakArray.length;i++)
-        {
-            editor.putString("arrayEkintzakPuntuazioa" + "_" + i, puntuazioaEkintzakArray[i]);
-            editor.putString("arrayEkintzakOrdua" + "_" + i, orduaEkintzakArray[i]);
-            editor.putString("arrayEkintzakData" + "_" + i, dataEkintzakArray[i]);
-        }
+            @Override
+            protected void onPostExecute(Void aVoid)
+            {
+                if(resultadoGETGorde.matches("GORDETA"))
+                {
+                    Toast.makeText(getApplicationContext(),R.string.gordeta,Toast.LENGTH_LONG).show();
+                    int size = prefs.getInt("arrayEkintzakPuntuazioa" + "_size", 0);
+                    size++;
+                    SharedPreferences.Editor editor=prefs.edit();
 
-        editor.commit();
+                    String correctasEkintzakString=Integer.toString(puntuazioaEkintzak);
+
+                    String[] puntuazioaEkintzakArray=new String[size];
+                    String[] orduaEkintzakArray=new String[size];
+                    String[] dataEkintzakArray=new String[size];
+
+                    Date date = new Date();
+                    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+                    String ordua=hourFormat.format(date);
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String data=dateFormat.format(date);
+
+                    for(int i=0;i<size;i++)
+                    {
+                        puntuazioaEkintzakArray[i] = prefs.getString("arrayEkintzakPuntuazioa" + "_" + i, "");
+                        orduaEkintzakArray[i] = prefs.getString("arrayEkintzakOrdua" + "_" + i, "");
+                        dataEkintzakArray[i] = prefs.getString("arrayEkintzakData" + "_" + i, "");
+                        if(puntuazioaEkintzakArray[0]=="")
+                        {
+                            puntuazioaEkintzakArray[0]=correctasEkintzakString;
+                            orduaEkintzakArray[0]=ordua;
+                            dataEkintzakArray[0]=data;
+                        }else
+                        {
+                            //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
+                            puntuazioaEkintzakArray[size-1]=correctasEkintzakString;
+                            orduaEkintzakArray[size-1]=ordua;
+                            dataEkintzakArray[size-1]=data;
+                        }
+                    }
+
+                    editor.putInt("arrayEkintzakPuntuazioa" +"_size", puntuazioaEkintzakArray.length);
+                    for(int i=0;i<puntuazioaEkintzakArray.length;i++)
+                    {
+                        editor.putString("arrayEkintzakPuntuazioa" + "_" + i, puntuazioaEkintzakArray[i]);
+                        editor.putString("arrayEkintzakOrdua" + "_" + i, orduaEkintzakArray[i]);
+                        editor.putString("arrayEkintzakData" + "_" + i, dataEkintzakArray[i]);
+                    }
+
+                    editor.commit();
+
+                }else
+                {
+                    Toast.makeText(getApplicationContext(),R.string.gordeEz,Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 }

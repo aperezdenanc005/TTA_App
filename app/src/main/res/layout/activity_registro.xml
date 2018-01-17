@@ -58,11 +58,11 @@
             <Button
                 android:layout_height="wrap_content"
                 android:text="@string/registarse"
-                android:onClick="lanzarlogin"/>
+                android:onClick="lanzarlogin" />
             <Button
                 android:layout_height="wrap_content"
                 android:text="@string/iniciar_sesion"
-                android:onClick="lanzarlogin"/>
+                android:onClick="lanzarloginYaResgistrado" />
         </TableRow>
     </TableLayout>
 

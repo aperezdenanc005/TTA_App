@@ -2,13 +2,16 @@ package eus.ehu.egunerokoapp.tta.egunerokoapp.presentacion;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import eus.ehu.egunerokoapp.tta.egunerokoapp.R;
+import eus.ehu.egunerokoapp.tta.egunerokoapp.modelo.RestClient;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +24,8 @@ import java.util.Arrays;
 
 public class ZerdiozuActivity extends AppCompatActivity {
 
+    RestClient restClient=new RestClient("http://u017633.ehu.eus:28080/EgunerokoApp/rest/App");
+    String resultadoGETGorde;
     String[] columnaCastellano={"PERDÓN","HOLA","¿QUÉ HORA ES?","GRACIAS","ME DAS...","ADIÓS","BUENOS DÍAS"};
     String[] columnaCastellanoMezclada=Randomize(columnaCastellano);
     int correctas=0;
@@ -687,51 +692,84 @@ public class ZerdiozuActivity extends AppCompatActivity {
     }
     public void gorde(View view)
     {
-        SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
-        int size = prefs.getInt("arrayZerDiozuPuntuazioa" + "_size", 0);
-        SharedPreferences.Editor editor=prefs.edit();
-        size++;
-        String correctasZerDiozuString=Integer.toString(correctas);
+        final SharedPreferences prefs=getSharedPreferences("EgunerokoAppPreferences",MODE_PRIVATE);
+        final String login=prefs.getString("login","");
 
-        String[] puntuazioaZerDiozu=new String[size];
-        String[] orduaZerDiozu=new String[size];
-        String[] dataZerDiozu=new String[size];
-
-        Date date = new Date();
-        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-        String ordua=hourFormat.format(date);
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String data=dateFormat.format(date);
-
-        for(int i=0;i<size;i++)
+        new AsyncTask<Void,Void,Void>()
         {
-            puntuazioaZerDiozu[i] = prefs.getString("arrayZerDiozuPuntuazioa" + "_" + i, "");
-            orduaZerDiozu[i] = prefs.getString("arrayZerDiozuOrdua" + "_" + i, "");
-            dataZerDiozu[i] = prefs.getString("arrayZerDiozuData" + "_" + i, "");
-            if(puntuazioaZerDiozu[0]=="")
+            @Override
+            protected Void doInBackground(Void... voids)
             {
-                puntuazioaZerDiozu[0]=correctasZerDiozuString;
-                orduaZerDiozu[0]=ordua;
-                dataZerDiozu[0]=data;
-            }else
-            {
-                //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
-                puntuazioaZerDiozu[size-1]=correctasZerDiozuString;
-                orduaZerDiozu[size-1]=ordua;
-                dataZerDiozu[size-1]=data;
+                try{
+                    //restClient.setHttpBasicAuth(dni,passwd);
+                    resultadoGETGorde=restClient.getString(String.format("gorde?login=%s",login+"&puntos="+correctas+"&nombre=zerDiozu"));
+                    //} catch (JSONException e) {
+                    //e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String ok=resultadoGETGorde;
+
+                return null;
             }
-        }
 
-        editor.putInt("arrayZerDiozuPuntuazioa" +"_size", puntuazioaZerDiozu.length);
-        for(int i=0;i<puntuazioaZerDiozu.length;i++)
-        {
-            editor.putString("arrayZerDiozuPuntuazioa" + "_" + i, puntuazioaZerDiozu[i]);
-            editor.putString("arrayZerDiozuOrdua" + "_" + i, orduaZerDiozu[i]);
-            editor.putString("arrayZerDiozuData" + "_" + i, dataZerDiozu[i]);
-        }
-        //editor.commit();
-        //editor.putString("orduaZerDiozu",ordua);
-        //editor.putString("dataZerDiozu",data);
-        editor.commit();
+            @Override
+            protected void onPostExecute(Void aVoid)
+            {
+                if(resultadoGETGorde.matches("GORDETA"))
+                {
+                    Toast.makeText(getApplicationContext(),R.string.gordeta,Toast.LENGTH_LONG).show();
+                    int size = prefs.getInt("arrayZerDiozuPuntuazioa" + "_size", 0);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    size++;
+                    String correctasZerDiozuString=Integer.toString(correctas);
+
+                    String[] puntuazioaZerDiozu=new String[size];
+                    String[] orduaZerDiozu=new String[size];
+                    String[] dataZerDiozu=new String[size];
+
+                    Date date = new Date();
+                    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+                    String ordua=hourFormat.format(date);
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String data=dateFormat.format(date);
+
+                    for(int i=0;i<size;i++)
+                    {
+                        puntuazioaZerDiozu[i] = prefs.getString("arrayZerDiozuPuntuazioa" + "_" + i, "");
+                        orduaZerDiozu[i] = prefs.getString("arrayZerDiozuOrdua" + "_" + i, "");
+                        dataZerDiozu[i] = prefs.getString("arrayZerDiozuData" + "_" + i, "");
+                        if(puntuazioaZerDiozu[0]=="")
+                        {
+                            puntuazioaZerDiozu[0]=correctasZerDiozuString;
+                            orduaZerDiozu[0]=ordua;
+                            dataZerDiozu[0]=data;
+                        }else
+                        {
+                            //Toast.makeText(this,Integer.toString(size),Toast.LENGTH_SHORT).show();
+                            puntuazioaZerDiozu[size-1]=correctasZerDiozuString;
+                            orduaZerDiozu[size-1]=ordua;
+                            dataZerDiozu[size-1]=data;
+                        }
+                    }
+
+                    editor.putInt("arrayZerDiozuPuntuazioa" +"_size", puntuazioaZerDiozu.length);
+                    for(int i=0;i<puntuazioaZerDiozu.length;i++)
+                    {
+                        editor.putString("arrayZerDiozuPuntuazioa" + "_" + i, puntuazioaZerDiozu[i]);
+                        editor.putString("arrayZerDiozuOrdua" + "_" + i, orduaZerDiozu[i]);
+                        editor.putString("arrayZerDiozuData" + "_" + i, dataZerDiozu[i]);
+                    }
+                    //editor.commit();
+                    //editor.putString("orduaZerDiozu",ordua);
+                    //editor.putString("dataZerDiozu",data);
+                    editor.commit();
+
+                }else
+                {
+                    Toast.makeText(getApplicationContext(),R.string.gordeEz,Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 }

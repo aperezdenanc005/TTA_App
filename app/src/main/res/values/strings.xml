@@ -11,7 +11,7 @@
 
     <string name="registarse">REGISTARSE</string>
     <string name="iniciar_sesion">INICIAR SESIÓN</string>
-    <string name="sacar_foto">SACAR FOTO</string>
+    <string name="sacar_foto">SACAR FOTO DE PERFIL</string>
 
     <string name="login_text">LOGIN</string>
     <string name="login_contrasena_text">CONTRASEÑA</string>
@@ -51,4 +51,10 @@
 
     <string name="no_camera">No dispones de camara en el dispositivo</string>
     <string name="no_app">No dispones de la aplicación necesaria</string>
+    <string name="usuario_incorrecto">El login o la contraseña no son validos</string>
+    <string name="campos">Hay que rellenar todos los campos</string>
+    <string name="registro">El registro se ha realizado correctamente!! Para jugar primero tienes que logearte. Tu login es: </string>
+    <string name="error_registro">El usuario ya existe</string>
+    <string name="gordeEz">Emaitzak ez dira gorde!!</string>
+    <string name="gordeta">Emaitzak ondo gorde dira!!</string>
 </resources>
